@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+/* Definizione dei colori e delle animazioni personalizzate */
+@theme {
+  --color-brand-deep: #020617;
+  --color-brand-cyan: #22d3ee;
+}
+
+/* Animazione per lo sfondo */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientMove 10s ease infinite;
+}
+
+/* Stile per la sfera */
+.sphere-glow {
+  filter: blur(2px);
+  box-shadow: 0 0 60px 10px rgba(34, 211, 238, 0.3);
+}
