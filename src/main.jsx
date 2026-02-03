@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/" element={<ProdottoPage />} />
         
         {/* La pagina aziendale raggiungibile su /azienda */}
-        <Route path="/azienda" element={<App />} />
+        <Route path="/home" element={<App />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
