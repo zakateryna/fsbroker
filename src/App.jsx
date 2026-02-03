@@ -1,102 +1,85 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
-import "./index.css";
+import { useNavigate } from "react-router-dom";
 import logoBrand from "./assets/logo.png";
 
-function App() {
+function AziendaPage() {
   const [showBox, setShowBox] = useState(false);
-  
-  // Tracciamo la posizione X per calcolare la luminosità del logo
+  const navigate = useNavigate();
   const xPos = useMotionValue(-20);
 
-  // Luminosità dinamica: picco quando la sfera è al centro (50vw)
   const logoBrightness = useTransform(
-    xPos, 
-    [-20, 30, 50, 70, 120], 
-    [1, 1, 8, 1, 1] // Aumentato a 8 per un effetto ancora più forte
+    xPos,
+    [-20, 20, 45, 50, 55, 80, 120],
+    [1, 1, 4, 8, 4, 1, 1]
   );
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowBox(true), 900);
+    const timer = setTimeout(() => setShowBox(true), 1200);
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#020617]">
-      
-      {/* Sfera con traiettoria ad arco */}
+
       <motion.div
         style={{ x: xPos.get() + "vw", left: 0 }}
         initial={{ opacity: 0 }}
-        animate={{ 
+        animate={{
           x: ["-20vw", "120vw"],
-          // Movimento ad arco: parte basso, sale al centro, scende alla fine
-          y: ["50vh", "-5vh", "50vh"], 
-          opacity: [0, 1, 1, 0] 
+          y: ["55vh", "-10vh", "55vh"],
+          opacity: [0, 1, 1, 0]
         }}
-        onUpdate={(latest) => {
-          // Aggiorna xPos per sincronizzare la luce del logo
-          const numericX = parseFloat(latest.x);
-          xPos.set(numericX);
-        }}
-        transition={{ 
-          duration: 10, 
-          repeat: Infinity, 
-          ease: "easeInOut", // Rende l'arco più fluido
-          times: [0, 0.5, 1]
-        }}
-        className="absolute w-32 h-32 bg-white rounded-full z-0 
-                   shadow-[0_100px_200px_80px_rgba(255,255,255,0.9)] blur-[1px]"
+        onUpdate={(latest) => xPos.set(parseFloat(latest.x))}
+        transition={{ duration: 7, repeat: Infinity, ease: [0.45, 0.05, 0.55, 0.95], times: [0, 0.4, 0.6, 1] }}
+        className="absolute w-28 h-28 bg-white rounded-full z-0 shadow-[0_120px_250px_90px_rgba(255,255,255,0.85)] blur-[1px]"
       />
 
-      {/* Logo che reagisce alla sfera */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
+        initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         style={{ filter: useTransform(logoBrightness, (v) => `brightness(${v})`) }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="relative z-10 mb-12 flex items-center justify-center"
+        className="relative z-10 mb-12"
       >
-        <img
-          src={logoBrand}
-          alt="Brand Logo"
-          className="h-24 md:h-32 w-auto transition-none"
-        />
+        <img src={logoBrand} alt="Logo" className="h-24 md:h-32 w-auto" />
       </motion.div>
 
-      {/* Box Messaggio Bianco */}
       <AnimatePresence>
         {showBox && (
           <motion.div
-            initial={{ y: 600, opacity: 0 }}
+            initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ type: "spring", damping: 25, stiffness: 80 }}
-            className="z-20 w-full max-w-md mx-4"
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            className="z-20 w-full max-w-lg mx-4"
           >
-            <div className="bg-[#FFFFFF] p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden">
-              <div className="relative z-10 text-center">
-                <h2 className="text-3xl font-bold text-slate-900 mb-3">
-                  Il nostro lancio è vicino.
-                </h2>
-                <p className="text-slate-600 leading-relaxed">
-                  Stiamo dando forma a una nuova piattaforma, basata su competenza e visione.
-                </p>
-                <div className="mt-8 pt-6 border-t border-slate-100">
-                   <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">
-                    FS Brothers &amp; Brokers — Coming soon
-                  </p>
-                </div>
+            <div className="bg-white/95 backdrop-blur-sm p-10 md:p-14 rounded-[3rem] shadow-[0_40px_100px_rgba(0,0,0,0.6)] text-center">
+
+
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-8 mb-4 tracking-tight">
+                Il nostro lancio è vicino.
+              </h2>
+
+              <p className="text-slate-600 text-lg leading-relaxed mb-12">
+                Costruiamo una nuova realtà basata su visione, competenza e innovazione. </p>
+
+              <div className="pt-8 border-t border-slate-100">
+                <button
+                  onClick={() => navigate('/')}
+                  className="text-cyan-600 hover:text-cyan-700 text-[11px] font-bold transition-colors uppercase tracking-[0.2em] block mx-auto"
+                >
+                  ← Torna a PolizzaSanitaria.it
+                </button>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <footer className="absolute bottom-8 text-slate-500 text-xs tracking-widest">
-        &copy; 2026 FS BROTHERS &amp; BROKERS S.R.L.
+      <footer className="absolute bottom-8 text-slate-500 text-[10px] tracking-[0.3em] uppercase opacity-60 font-medium">
+        &copy; 2026 FS BROTHERS & BROKERS S.R.L.
       </footer>
     </div>
   );
 }
 
-export default App;
+export default AziendaPage;
