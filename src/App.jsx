@@ -22,6 +22,7 @@ function AziendaPage() {
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#020617]">
 
+      {/* Sfera Bianca ad Arco */}
       <motion.div
         style={{ x: xPos.get() + "vw", left: 0 }}
         initial={{ opacity: 0 }}
@@ -35,6 +36,7 @@ function AziendaPage() {
         className="absolute w-28 h-28 bg-white rounded-full z-0 shadow-[0_120px_250px_90px_rgba(255,255,255,0.85)] blur-[1px]"
       />
 
+      {/* Logo Reattivo */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -53,14 +55,13 @@ function AziendaPage() {
             className="z-20 w-full max-w-lg mx-4"
           >
             <div className="bg-white/95 backdrop-blur-sm p-10 md:p-14 rounded-[3rem] shadow-[0_40px_100px_rgba(0,0,0,0.6)] text-center">
-
-
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-8 mb-4 tracking-tight">
                 Il nostro lancio è vicino.
               </h2>
 
               <p className="text-slate-600 text-lg leading-relaxed mb-12">
-                Costruiamo una nuova realtà basata su visione, competenza e innovazione. </p>
+                Costruiamo una nuova realtà basata su visione, competenza e innovazione.
+              </p>
 
               <div className="pt-8 border-t border-slate-100">
                 <button

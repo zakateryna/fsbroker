@@ -13,6 +13,7 @@ function ProdottoPage() {
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#020617]">
+      {/* Bagliore Ciano */}
       <div className="absolute w-[600px] h-[600px] bg-cyan-900/10 rounded-full blur-[120px] pointer-events-none" />
 
       <AnimatePresence>
@@ -38,7 +39,7 @@ function ProdottoPage() {
 
               <div className="pt-8 border-t border-slate-100">
                 <button 
-                  onClick={() => navigate('/azienda')}
+                  onClick={() => navigate('/home')}
                   className="text-slate-400 hover:text-slate-900 text-[11px] font-bold transition-colors uppercase tracking-[0.2em] block mx-auto"
                 >
                   Progetto a cura di FS Brothers & Brokers →
