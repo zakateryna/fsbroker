@@ -9,7 +9,6 @@ import {
   Mail,
   MapPin,
   Menu,
-  MessageCircle,
   Scale,
   ShieldCheck,
   Users,
@@ -110,9 +109,6 @@ const contactDetails = {
   rui: "RUI B000797510",
   email: "info@fsbassicura.it",
   pec: "fsbassicura@pec.it",
-  whatsappHref:
-    "https://wa.me/393515575287?text=Buongiorno%2C%20vorrei%20ricevere%20informazioni%20sui%20servizi%20di%20FS%20Brothers%20%26%20Brokers.",
-  whatsappLabel: "WhatsApp +39 351 557 5287",
   mapsHref:
     "https://www.google.com/maps?q=Galleria+del+Corso+4,+20122+Milano",
   directionsHref:
@@ -411,7 +407,8 @@ export default function ProdottoPage() {
               Un contatto diretto, chiaro e professionale.
             </h2>
             <p className="mt-5 text-lg leading-relaxed text-[#D2DEE8] md:text-xl">
-              Puoi scriverci o raggiungerci rapidamente su WhatsApp per un primo contatto.
+              Puoi contattarci via email per un primo confronto o per richiedere
+              informazioni sui nostri servizi.
             </p>
           </div>
 
@@ -433,13 +430,11 @@ export default function ProdottoPage() {
 
                 <div className="mt-7 flex flex-col gap-4 sm:flex-row">
                   <a
-                    href={contactDetails.whatsappHref}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-3 rounded-full bg-[linear-gradient(135deg,#1FA855_0%,#16924A_100%)] px-6 py-3.5 text-base font-bold text-white shadow-[0_16px_28px_rgba(20,120,62,0.28)] transition hover:-translate-y-0.5 hover:brightness-105"
+                    href={`mailto:${contactDetails.email}`}
+                    className="inline-flex items-center justify-center gap-3 rounded-full bg-[#6CA9DB] px-6 py-3.5 text-base font-bold text-[#081523] shadow-[0_16px_28px_rgba(108,169,219,0.24)] transition hover:-translate-y-0.5 hover:brightness-110"
                   >
-                    <MessageCircle size={18} />
-                    Scrivici su WhatsApp
+                    <Mail size={18} />
+                    Contattaci via email
                   </a>
                 </div>
 
@@ -456,10 +451,8 @@ export default function ProdottoPage() {
                     value={contactDetails.pec}
                     href={`mailto:${contactDetails.pec}`}
                   />
-
                 </div>
               </div>
-
             </div>
 
             <div>
@@ -505,8 +498,7 @@ export default function ProdottoPage() {
               FS BROTHERS &amp; BROKERS SRL
             </p>
             <p className="mt-1 text-sm text-white/52">
-              {contactDetails.vat} · {contactDetails.rui} ·{" "}
-              {contactDetails.code}
+              {contactDetails.vat} · {contactDetails.rui}
             </p>
           </div>
 
