@@ -125,11 +125,69 @@ export default function ProdottoPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const menuOpenedAtRef = useRef(0);
   const headerRef = useRef(null);
+  const firstLoadRef = useRef(true);
 
   const serviziRef = useRef(null);
   const metodoRef = useRef(null);
   const chiSiamoRef = useRef(null);
   const contattiRef = useRef(null);
+
+  function getHeaderOffset() {
+    return headerRef.current?.offsetHeight ?? 0;
+  }
+
+  function scrollToSection(path, behavior = "smooth") {
+    const refMap = {
+      "/servizi": serviziRef,
+      "/metodo": metodoRef,
+      "/chi-siamo": chiSiamoRef,
+      "/contatti": contattiRef,
+    };
+
+    if (path === "/") {
+      window.scrollTo({ top: 0, behavior });
+      return;
+    }
+
+    const targetRef = refMap[path];
+    if (!targetRef?.current) return;
+
+    const top =
+      targetRef.current.getBoundingClientRect().top +
+      window.scrollY -
+      getHeaderOffset();
+
+    window.scrollTo({
+      top,
+      behavior,
+    });
+  }
+
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
+
+  useEffect(() => {
+    if (firstLoadRef.current) {
+      firstLoadRef.current = false;
+
+      if (location.pathname !== "/") {
+        navigate("/", { replace: true });
+        return;
+      }
+
+      window.scrollTo({ top: 0, behavior: "auto" });
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      scrollToSection(location.pathname, "smooth");
+    }, 40);
+
+    return () => clearTimeout(timer);
+  }, [location.pathname, navigate]);
 
   useEffect(() => {
     function handleScroll() {
@@ -158,88 +216,11 @@ export default function ProdottoPage() {
     };
   }, [mobileMenuOpen]);
 
-  useEffect(() => {
-    function getHeaderOffset() {
-      return headerRef.current?.offsetHeight ?? 0;
-    }
-
-    function scrollToRef(ref) {
-      if (!ref.current) return;
-
-      const offset = getHeaderOffset();
-      const top =
-        ref.current.getBoundingClientRect().top + window.scrollY - offset;
-
-      window.scrollTo({
-        top,
-        behavior: "smooth",
-      });
-    }
-
-    const runScroll = () => {
-      if (location.pathname === "/") {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-        return;
-      }
-
-      if (location.pathname === "/servizi") {
-        scrollToRef(serviziRef);
-        return;
-      }
-
-      if (location.pathname === "/metodo") {
-        scrollToRef(metodoRef);
-        return;
-      }
-
-      if (location.pathname === "/chi-siamo") {
-        scrollToRef(chiSiamoRef);
-        return;
-      }
-
-      if (location.pathname === "/contatti") {
-        scrollToRef(contattiRef);
-      }
-    };
-
-    const timer = setTimeout(runScroll, 60);
-    return () => clearTimeout(timer);
-  }, [location.pathname]);
-
   function goTo(path) {
     setMobileMenuOpen(false);
 
     if (location.pathname === path) {
-      if (path === "/") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        return;
-      }
-
-      const refMap = {
-        "/servizi": serviziRef,
-        "/metodo": metodoRef,
-        "/chi-siamo": chiSiamoRef,
-        "/contatti": contattiRef,
-      };
-
-      const targetRef = refMap[path];
-      const offset = headerRef.current?.offsetHeight ?? 0;
-
-      if (targetRef?.current) {
-        const top =
-          targetRef.current.getBoundingClientRect().top +
-          window.scrollY -
-          offset;
-
-        window.scrollTo({
-          top,
-          behavior: "smooth",
-        });
-      }
-
+      scrollToSection(path, "smooth");
       return;
     }
 
