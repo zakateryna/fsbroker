@@ -160,9 +160,7 @@ export default function ProdottoPage() {
 
   useEffect(() => {
     function getHeaderOffset() {
-      const headerHeight = headerRef.current?.offsetHeight ?? 0;
-      const extraSpace = window.innerWidth < 768 ? 12 : 20;
-      return headerHeight + extraSpace;
+      return headerRef.current?.offsetHeight ?? 0;
     }
 
     function scrollToRef(ref) {
@@ -228,9 +226,7 @@ export default function ProdottoPage() {
       };
 
       const targetRef = refMap[path];
-      const headerHeight = headerRef.current?.offsetHeight ?? 0;
-      const extraSpace = window.innerWidth < 768 ? 12 : 20;
-      const offset = headerHeight + extraSpace;
+      const offset = headerRef.current?.offsetHeight ?? 0;
 
       if (targetRef?.current) {
         const top =
