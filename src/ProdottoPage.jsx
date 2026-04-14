@@ -124,6 +124,7 @@ export default function ProdottoPage() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const menuOpenedAtRef = useRef(0);
+  const headerRef = useRef(null);
 
   const serviziRef = useRef(null);
   const metodoRef = useRef(null);
@@ -158,10 +159,16 @@ export default function ProdottoPage() {
   }, [mobileMenuOpen]);
 
   useEffect(() => {
-    const offset = 96;
+    function getHeaderOffset() {
+      const headerHeight = headerRef.current?.offsetHeight ?? 0;
+      const extraSpace = window.innerWidth < 768 ? 12 : 20;
+      return headerHeight + extraSpace;
+    }
 
     function scrollToRef(ref) {
       if (!ref.current) return;
+
+      const offset = getHeaderOffset();
       const top =
         ref.current.getBoundingClientRect().top + window.scrollY - offset;
 
@@ -171,6 +178,82 @@ export default function ProdottoPage() {
       });
     }
 
+    const runScroll = () => {
+      if (location.pathname === "/") {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+        return;
+      }
+
+      if (location.pathname === "/servizi") {
+        scrollToRef(serviziRef);
+        return;
+      }
+
+      if (location.pathname === "/metodo") {
+        scrollToRef(metodoRef);
+        return;
+      }
+
+      if (location.pathname === "/chi-siamo") {
+        scrollToRef(chiSiamoRef);
+        return;
+      }
+
+      if (location.pathname === "/contatti") {
+        scrollToRef(contattiRef);
+      }
+    };
+
+    const timer = setTimeout(runScroll, 60);
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
+
+  function goTo(path) {
+    setMobileMenuOpen(false);
+
+    if (location.pathname === path) {
+      if (path === "/") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+
+      const refMap = {
+        "/servizi": serviziRef,
+        "/metodo": metodoRef,
+        "/chi-siamo": chiSiamoRef,
+        "/contatti": contattiRef,
+      };
+
+      const targetRef = refMap[path];
+      const headerHeight = headerRef.current?.offsetHeight ?? 0;
+      const extraSpace = window.innerWidth < 768 ? 12 : 20;
+      const offset = headerHeight + extraSpace;
+
+      if (targetRef?.current) {
+        const top =
+          targetRef.current.getBoundingClientRect().top +
+          window.scrollY -
+          offset;
+
+        window.scrollTo({
+          top,
+          behavior: "smooth",
+        });
+      }
+
+      return;
+    }
+
+    navigate(path);
+  }
+
+  function handleLogoClick(event) {
+    event.preventDefault();
+    setMobileMenuOpen(false);
+
     if (location.pathname === "/") {
       window.scrollTo({
         top: 0,
@@ -179,40 +262,15 @@ export default function ProdottoPage() {
       return;
     }
 
-    if (location.pathname === "/servizi") {
-      scrollToRef(serviziRef);
-      return;
-    }
-
-    if (location.pathname === "/metodo") {
-      scrollToRef(metodoRef);
-      return;
-    }
-
-    if (location.pathname === "/chi-siamo") {
-      scrollToRef(chiSiamoRef);
-      return;
-    }
-
-    if (location.pathname === "/contatti") {
-      scrollToRef(contattiRef);
-    }
-  }, [location.pathname]);
-
-  function goTo(path) {
-    setMobileMenuOpen(false);
-    navigate(path);
-  }
-
-  function handleLogoClick(event) {
-    event.preventDefault();
-    setMobileMenuOpen(false);
     navigate("/");
   }
 
   return (
     <div className="min-h-screen bg-[#F3F5F7] text-[#17202A]">
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-[#091522]/92 backdrop-blur">
+      <header
+        ref={headerRef}
+        className="sticky top-0 z-40 border-b border-white/10 bg-[#091522]/92 backdrop-blur"
+      >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-8 md:py-4">
           <a href="/" className="flex items-center" onClick={handleLogoClick}>
             <NavbarLogo />
