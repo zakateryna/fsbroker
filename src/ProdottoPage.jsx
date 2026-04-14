@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   Briefcase,
@@ -12,13 +13,13 @@ import {
   X,
 } from "lucide-react";
 import logoBrand from "./assets/logo-navbar.svg";
-import heroMilano from "./assets/hero-milano.png";
+import heroMilano from "./assets/hero-milano.webp";
 
-import servicePrivati from "./assets/privati.png";
-import serviceFamiglie from "./assets/famiglia.png";
-import serviceProfessionisti from "./assets/professionisti.png";
-import serviceImprese from "./assets/imprese.png";
-import metodoImage from "./assets/metodo.png";
+import servicePrivati from "./assets/privati.webp";
+import serviceFamiglie from "./assets/famiglia.webp";
+import serviceProfessionisti from "./assets/professionisti.webp";
+import serviceImprese from "./assets/imprese.webp";
+import metodoImage from "./assets/metodo.webp";
 
 const credibilityItems = [
   {
@@ -53,7 +54,7 @@ const services = [
   {
     title: "Coperture familiari",
     image: serviceFamiglie,
-    imagePosition: "object-[68%_center]",
+    imagePosition: "object-[68%_12%]",
     text: "Percorsi dedicati ai nuclei familiari, orientati a continuità, protezione condivisa e maggiore equilibrio nella gestione del rischio.",
   },
   {
@@ -118,8 +119,16 @@ const contactDetails = {
 };
 
 export default function ProdottoPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const menuOpenedAtRef = useRef(0);
+
+  const serviziRef = useRef(null);
+  const metodoRef = useRef(null);
+  const chiSiamoRef = useRef(null);
+  const contattiRef = useRef(null);
 
   useEffect(() => {
     function handleScroll() {
@@ -148,17 +157,57 @@ export default function ProdottoPage() {
     };
   }, [mobileMenuOpen]);
 
-  function handleMobileNavClick() {
+  useEffect(() => {
+    const offset = 96;
+
+    function scrollToRef(ref) {
+      if (!ref.current) return;
+      const top =
+        ref.current.getBoundingClientRect().top + window.scrollY - offset;
+
+      window.scrollTo({
+        top,
+        behavior: "smooth",
+      });
+    }
+
+    if (location.pathname === "/") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return;
+    }
+
+    if (location.pathname === "/servizi") {
+      scrollToRef(serviziRef);
+      return;
+    }
+
+    if (location.pathname === "/metodo") {
+      scrollToRef(metodoRef);
+      return;
+    }
+
+    if (location.pathname === "/chi-siamo") {
+      scrollToRef(chiSiamoRef);
+      return;
+    }
+
+    if (location.pathname === "/contatti") {
+      scrollToRef(contattiRef);
+    }
+  }, [location.pathname]);
+
+  function goTo(path) {
     setMobileMenuOpen(false);
+    navigate(path);
   }
 
   function handleLogoClick(event) {
     event.preventDefault();
     setMobileMenuOpen(false);
-    window.scrollTo({
-      top: 0,
-      behavior: "auto",
-    });
+    navigate("/");
   }
 
   return (
@@ -170,30 +219,37 @@ export default function ProdottoPage() {
           </a>
 
           <nav className="hidden items-center gap-8 md:flex">
-            <a
-              href="#servizi"
+            <button
+              type="button"
+              onClick={() => goTo("/servizi")}
               className="text-sm font-semibold text-white/72 transition hover:text-white lg:text-base"
             >
               Servizi
-            </a>
-            <a
-              href="#metodo"
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goTo("/metodo")}
               className="text-sm font-semibold text-white/72 transition hover:text-white lg:text-base"
             >
               Metodo
-            </a>
-            <a
-              href="#chi-siamo"
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goTo("/chi-siamo")}
               className="text-sm font-semibold text-white/72 transition hover:text-white lg:text-base"
             >
               Perché FSB
-            </a>
-            <a
-              href="#contatti"
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goTo("/contatti")}
               className="rounded-full bg-[#6CA9DB] px-5 py-2.5 text-sm font-bold text-[#081523] transition hover:brightness-110 lg:text-base"
             >
               Contatti
-            </a>
+            </button>
           </nav>
 
           <button
@@ -216,34 +272,37 @@ export default function ProdottoPage() {
           }`}
         >
           <nav className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-4">
-            <a
-              href="#servizi"
-              onClick={handleMobileNavClick}
-              className="rounded-2xl px-4 py-3 text-base font-semibold text-white/82 transition hover:bg-white/8 hover:text-white"
+            <button
+              type="button"
+              onClick={() => goTo("/servizi")}
+              className="rounded-2xl px-4 py-3 text-left text-base font-semibold text-white/82 transition hover:bg-white/8 hover:text-white"
             >
               Servizi
-            </a>
-            <a
-              href="#metodo"
-              onClick={handleMobileNavClick}
-              className="rounded-2xl px-4 py-3 text-base font-semibold text-white/82 transition hover:bg-white/8 hover:text-white"
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goTo("/metodo")}
+              className="rounded-2xl px-4 py-3 text-left text-base font-semibold text-white/82 transition hover:bg-white/8 hover:text-white"
             >
               Metodo
-            </a>
-            <a
-              href="#chi-siamo"
-              onClick={handleMobileNavClick}
-              className="rounded-2xl px-4 py-3 text-base font-semibold text-white/82 transition hover:bg-white/8 hover:text-white"
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goTo("/chi-siamo")}
+              className="rounded-2xl px-4 py-3 text-left text-base font-semibold text-white/82 transition hover:bg-white/8 hover:text-white"
             >
               Perché FSB
-            </a>
-            <a
-              href="#contatti"
-              onClick={handleMobileNavClick}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goTo("/contatti")}
               className="mt-2 inline-flex items-center justify-center rounded-full bg-[#6CA9DB] px-5 py-3 text-base font-bold text-[#081523] transition hover:brightness-110"
             >
               Contatti
-            </a>
+            </button>
           </nav>
         </div>
       </header>
@@ -254,6 +313,7 @@ export default function ProdottoPage() {
             <img
               src={heroMilano}
               alt="Sede a Milano"
+              fetchPriority="high"
               className="h-full w-full object-cover object-center"
             />
             <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,18,31,0.84)_0%,rgba(10,30,49,0.7)_34%,rgba(11,33,54,0.38)_60%,rgba(8,23,38,0.2)_100%)]" />
@@ -280,20 +340,22 @@ export default function ProdottoPage() {
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
-                <a
-                  href="#contatti"
+                <button
+                  type="button"
+                  onClick={() => goTo("/contatti")}
                   className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-[#163A5A] transition hover:bg-[#F2F6FA] sm:w-auto sm:text-base"
                 >
                   Richiedi una consulenza
                   <ArrowRight size={16} />
-                </a>
+                </button>
 
-                <a
-                  href="#servizi"
+                <button
+                  type="button"
+                  onClick={() => goTo("/servizi")}
                   className="inline-flex w-full items-center justify-center rounded-full border border-white/25 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-white/10 sm:w-auto sm:text-base"
                 >
                   Scopri le aree di consulenza
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -321,8 +383,9 @@ export default function ProdottoPage() {
         </section>
 
         <section
+          ref={serviziRef}
           id="servizi"
-          className="scroll-mt-24 md:scroll-mt-28 mx-auto max-w-7xl px-4 py-14 sm:py-16 md:px-8 md:py-24"
+          className="mx-auto max-w-7xl px-4 py-14 sm:py-16 md:px-8 md:py-24"
         >
           <SectionHeader
             eyebrow="Aree di consulenza"
@@ -337,10 +400,7 @@ export default function ProdottoPage() {
           </div>
         </section>
 
-        <section
-          id="metodo"
-          className="scroll-mt-24 md:scroll-mt-28 bg-white"
-        >
+        <section ref={metodoRef} id="metodo" className="bg-white">
           <div className="mx-auto max-w-7xl px-4 py-14 sm:py-16 md:px-8 md:py-24">
             <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
               <div className="flex flex-col gap-6">
@@ -355,6 +415,8 @@ export default function ProdottoPage() {
                     <img
                       src={metodoImage}
                       alt="Metodo di lavoro"
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover"
                     />
                     <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,21,34,0.08)_0%,rgba(9,21,34,0.22)_100%)]" />
@@ -379,10 +441,7 @@ export default function ProdottoPage() {
           </div>
         </section>
 
-        <section
-          id="chi-siamo"
-          className="scroll-mt-24 md:scroll-mt-28 bg-[#12263A]"
-        >
+        <section ref={chiSiamoRef} id="chi-siamo" className="bg-[#12263A]">
           <div className="mx-auto max-w-7xl px-4 py-14 sm:py-16 md:px-8 md:py-24">
             <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr]">
               <div>
@@ -435,21 +494,23 @@ export default function ProdottoPage() {
             </p>
 
             <div className="mt-7 sm:mt-8">
-              <a
-                href="#contatti"
+              <button
+                type="button"
+                onClick={() => goTo("/contatti")}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#1E4E79] px-6 py-3.5 text-sm font-bold text-white transition hover:brightness-110 sm:w-auto sm:text-base"
               >
                 Vai ai contatti
                 <ArrowRight size={16} />
-              </a>
+              </button>
             </div>
           </div>
         </section>
       </main>
 
       <section
+        ref={contattiRef}
         id="contatti"
-        className="scroll-mt-24 md:scroll-mt-28 border-t border-[#16324A] bg-[linear-gradient(180deg,#09131E_0%,#0D1C2B_100%)] text-white"
+        className="border-t border-[#16324A] bg-[linear-gradient(180deg,#09131E_0%,#0D1C2B_100%)] text-white"
       >
         <div className="mx-auto max-w-7xl px-4 py-14 sm:py-16 md:px-8 md:py-20">
           <div className="max-w-3xl">
@@ -599,6 +660,8 @@ function ServiceCard({ title, text, image, imagePosition = "object-center" }) {
         <img
           src={image}
           alt={title}
+          loading="lazy"
+          decoding="async"
           className={`h-full w-full object-cover ${imagePosition}`}
         />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,21,34,0.08)_0%,rgba(9,21,34,0.22)_100%)]" />
